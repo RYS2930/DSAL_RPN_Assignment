@@ -7,6 +7,7 @@ public class RPNEvaluator {
         testExpression("3 +");
         testExpression("4 5");
         testExpression("2 a +");
+        testExpression("2 3 ^");
     }
 
     public static double evaluate(String expression) {
@@ -17,7 +18,8 @@ public class RPNEvaluator {
         for (String token : tokens) {
 
             if (token.equals("+") || token.equals("-") ||
-                    token.equals("*") || token.equals("/")) {
+                    token.equals("*") || token.equals("/") ||
+                    token.equals("^")) {
 
                 if (stack.isEmpty()) {
                     throw new IllegalArgumentException("Invalid expression");
@@ -36,6 +38,7 @@ public class RPNEvaluator {
                     case "-": stack.push(a - b); break;
                     case "*": stack.push(a * b); break;
                     case "/": stack.push(a / b); break;
+                    case "^": stack.push(Math.pow(a, b)); break;
                 }
 
             } else {
