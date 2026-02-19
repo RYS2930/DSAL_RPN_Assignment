@@ -1,13 +1,39 @@
+import java.util.Scanner;
+
 public class RPNEvaluator {
 
     public static void main(String[] args) {
 
-        testExpression("3 4 + 2 *");
-        testExpression("5 2 -");
-        testExpression("3 +");
-        testExpression("4 5");
-        testExpression("2 a +");
-        testExpression("2 3 ^");
+//        ===== Test Cases (Evidence of Testing) =====
+//        testExpression("3 4 + 2 *");
+//        testExpression("5 2 -");
+//        testExpression("3 +");
+//        testExpression("4 5");
+//        testExpression("2 a +");
+//        testExpression("2 3 ^");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nEnter an RPN expression (or type 'exit' to quit):");
+
+        while (true) {
+            System.out.print("> ");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("exit")) {
+                System.out.println("Program terminated.");
+                break;
+            }
+
+            try {
+                double result = evaluate(input);
+                System.out.println("Result: " + result);
+            } catch (Exception e) {
+                System.out.println("ERROR: Invalid expression.");
+            }
+        }
+
+        scanner.close();
     }
 
     public static double evaluate(String expression) {
