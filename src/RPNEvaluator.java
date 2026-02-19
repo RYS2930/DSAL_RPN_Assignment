@@ -2,17 +2,16 @@ public class RPNEvaluator {
 
     public static void main(String[] args) {
 
-        String expr = "3 4 + 2 *";
-
-        double result = evaluate(expr);
-
-        System.out.println("Result: " + result);
+        testExpression("3 4 + 2 *");
+        testExpression("5 2 -");
+        testExpression("3 +");
+        testExpression("4 5");
+        testExpression("2 a +");
     }
 
     public static double evaluate(String expression) {
 
         Stack<Double> stack = new LinkedStack<>();
-
         String[] tokens = expression.split(" ");
 
         for (String token : tokens) {
@@ -20,22 +19,23 @@ public class RPNEvaluator {
             if (token.equals("+") || token.equals("-") ||
                     token.equals("*") || token.equals("/")) {
 
+                if (stack.isEmpty()) {
+                    throw new IllegalArgumentException("Invalid expression");
+                }
+
                 double b = stack.pop();
+
+                if (stack.isEmpty()) {
+                    throw new IllegalArgumentException("Invalid expression");
+                }
+
                 double a = stack.pop();
 
                 switch (token) {
-                    case "+":
-                        stack.push(a + b);
-                        break;
-                    case "-":
-                        stack.push(a - b);
-                        break;
-                    case "*":
-                        stack.push(a * b);
-                        break;
-                    case "/":
-                        stack.push(a / b);
-                        break;
+                    case "+": stack.push(a + b); break;
+                    case "-": stack.push(a - b); break;
+                    case "*": stack.push(a * b); break;
+                    case "/": stack.push(a / b); break;
                 }
 
             } else {
@@ -43,6 +43,25 @@ public class RPNEvaluator {
             }
         }
 
-        return stack.pop();
+        if (stack.isEmpty()) {
+            throw new IllegalArgumentException("Invalid expression");
+        }
+
+        double result = stack.pop();
+
+        if (!stack.isEmpty()) {
+            throw new IllegalArgumentException("Invalid expression");
+        }
+
+        return result;
+    }
+
+    private static void testExpression(String expr) {
+        try {
+            double result = evaluate(expr);
+            System.out.println(expr + " = " + result);
+        } catch (Exception e) {
+            System.out.println(expr + " → ERROR: " + e.getMessage());
+        }
     }
 }
